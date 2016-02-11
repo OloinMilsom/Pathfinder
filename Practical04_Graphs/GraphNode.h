@@ -24,9 +24,14 @@ private:
     NodeType m_data;
 
 // -------------------------------------------------------
-// Description: data inside the node
+// Description: current distance from search node (g(n))
 // -------------------------------------------------------
-	int m_searchDistance;
+	float m_searchDistance;
+
+// -------------------------------------------------------
+// Description: current heuristic from search node (h(n))
+// -------------------------------------------------------
+	float m_heuristic;
 
 // -------------------------------------------------------
 // Description: list of arcs that the node has.
@@ -57,8 +62,12 @@ public:
         return m_data;
     }
 
-	int const & getSearchDistance() const {
+	float const & getSearchDistance() const {
 		return m_searchDistance;
+	}
+
+	float const & getHeuristic() const {
+		return m_heuristic;
 	}
 
     // Manipulator functions
@@ -70,8 +79,12 @@ public:
         m_marked = mark;
     }
 
-	void setSearchDistance(int dist) {
+	void setSearchDistance(float dist) {
 		m_searchDistance = dist;
+	}
+
+	void setHeuristic(float h) {
+		m_heuristic = h;
 	}
 
 	void setPrevious(Node* prev) {

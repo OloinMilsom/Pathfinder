@@ -60,12 +60,23 @@ public:
     void breadthFirst( Node* pNode, void (*pProcess)(Node*) );
 	void breadthFirstSearch(Node* pStart, Node* pGoal, void (*pProcess)(Node*));
 	void ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(Node*), std::vector<Node *>& path);
+	void aStar(Node* pStart, Node* pDest, void(*pProcess)(Node*), std::vector<Node *>& path);
 
-	// functor struct for priority queue
-	struct NodeSearchCostCompare{
+
+
+	// functor struct for priority queue for ucs
+	struct UCSSearchCostCompare{
 	public:
 		bool operator()(Node * n1, Node * n2) {
 			return n1->getSearchDistance() > n2->getSearchDistance();
+		}
+	};
+
+	// functor struct for priority queue for A*
+	struct AStarSearchCostCompare{
+	public:
+		bool operator()(Node * n1, Node * n2) {
+			return (n1->getHeuristic() + n1->getSearchDistance()) > (n2->getHeuristic() + n2->getSearchDistance());
 		}
 	};
 };
@@ -373,15 +384,16 @@ void Graph<NodeType, ArcType>::breadthFirstSearch(Node* pStart, Node* pGoal, voi
 template<class NodeType, class ArcType>
 void Graph<NodeType, ArcType>::ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(Node*), std::vector<Node *>& path){
 	if (pStart != 0) {
-		priority_queue<Node*, vector<Node *>, NodeSearchCostCompare> nodeQueue;
+		priority_queue<Node*, vector<Node *>, UCSSearchCostCompare> nodeQueue;
 
 		// set starting search distance to be 0
 		pStart->setSearchDistance(0);
+		pStart->setHeuristic(0);
 		for (int i = 0; i < m_count; i++)
 		{
 			// if not starting set to be large number
 			if (m_pNodes[i] != pStart)
-				m_pNodes[i]->setSearchDistance(9999999999);
+				m_pNodes[i]->setSearchDistance(numeric_limits<float>::infinity());
 			// reset all previous pointers
 			m_pNodes[i]->setPrevious(nullptr);
 			m_pNodes[i]->setMarked(false);
@@ -392,9 +404,9 @@ void Graph<NodeType, ArcType>::ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(
 		pStart->setMarked(true);
 
 		// loop through the queue while there are nodes in it.
-		while (!nodeQueue.empty() && nodeQueue.top() != pDest) {
+		while (!nodeQueue.empty()) {
 			// print visiting current top of queue
-			pVisitFunc(nodeQueue.top());
+			//pVisitFunc(nodeQueue.top());
 
 			// iterate through the children of the top of queue
 			list<Arc>::const_iterator iter = nodeQueue.top()->arcList().begin();
@@ -404,9 +416,10 @@ void Graph<NodeType, ArcType>::ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(
 				{
 					// if the distance of the current route is shorter than the distance of 
 					// the previous shortest route, change the distance and previous node accordingly
-					int dist = (*iter).weight() + nodeQueue.top()->getSearchDistance();
+					float dist = (*iter).weight() + nodeQueue.top()->getSearchDistance();
 					if (dist < (*iter).node()->getSearchDistance()){
 						(*iter).node()->setSearchDistance(dist);
+						(*iter).node()->setHeuristic(dist * 0.9);
 						(*iter).node()->setPrevious(nodeQueue.top());
 					}
 					// add all of the child nodes that have not been 
@@ -430,6 +443,101 @@ void Graph<NodeType, ArcType>::ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(
 	}
 }
 
+template<class NodeType, class ArcType>
+void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(Node*), std::vector<Node *>& path) {
+	/*Let s = the starting node, g = goal node
+	Let pq = a new priority queue
+	Initialise g[s] to 0  
+	For each node v in graph G
+		Calculate h[v] // Compute estimated distance to goal for each node.
+	   Initialise g[v] to infinity // Don’t yet know the distances to these nodes 
+
+	Add s to the pq
+	Mark(s)
+	While the queue is not empty AND pq.top() != g
+		For each child node c of pq.top()
+		   If (c != previous(pq.top() AND c has not been removed from the pq)
+				Let distC = h(c) + g(c) // g(c) is actual path cost to child
+			   If ( distC < f(c) )
+				  let f[c] = distC
+				  Set previous pointer of c to pq.top()
+			   End if
+  				If (notMarked(c))
+					  Add c to the pq 
+					  Mark(c)
+			   End if
+			  End if
+		End for
+	   Remove pq.top()	
+	End while
+	*/
+	if (pStart != 0) {
+		// create priority queue with ordering based on f(n) or total cost
+		priority_queue<Node*, vector<Node *>, AStarSearchCostCompare> nodeQueue;
+
+		// set starting search distance to be 0
+		pStart->setSearchDistance(0);
+
+		// ucs heuristic for part 1
+		ucs(pDest, pStart, pProcess, path);
+
+		for (int i = 0; i < m_count; i++)
+		{
+			// if not starting set to be large number
+			if (m_pNodes[i] != pStart)
+				m_pNodes[i]->setSearchDistance(numeric_limits<float>::infinity());
+			// reset all previous pointers
+			m_pNodes[i]->setPrevious(nullptr);
+			m_pNodes[i]->setMarked(false);
+		}
+
+		bool found = false;
+
+		// add start node to top of queue and mark it
+		nodeQueue.push(pStart);
+		pStart->setMarked(true);
+		while (!nodeQueue.empty() && !found) {
+			// print visiting current top of queue
+			pProcess(nodeQueue.top());
+
+			// iterate through the children of the top of queue
+			list<Arc>::const_iterator iter = nodeQueue.top()->arcList().begin();
+			list<Arc>::const_iterator endIter = nodeQueue.top()->arcList().end();
+			for (; iter != endIter; iter++) {
+				if ((*iter).node() != nodeQueue.top()->getPrevious())
+				{
+					// if the distance of the current route is shorter than the distance of 
+					// the previous shortest route, change the distance and accordingly
+					float searchDist = (*iter).weight() + nodeQueue.top()->getSearchDistance();
+					float distC = (*iter).node()->getHeuristic() + searchDist;
+					float cost = (*iter).node()->getHeuristic() + (*iter).node()->getSearchDistance();
+					if (distC < cost) {
+						(*iter).node()->setSearchDistance(searchDist);
+						(*iter).node()->setPrevious(nodeQueue.top());
+					}
+					// add all of the child nodes that have not been 
+					// marked into the queue
+					if (!(*iter).node()->marked()){
+						nodeQueue.push((*iter).node());
+						(*iter).node()->setMarked(true);
+					}
+					if ((*iter).node() == pDest) {
+						found = true;
+					}
+				}
+			}
+			// dequeue the current node.
+			nodeQueue.pop();
+		}
+	}
+	Node * currNode = pDest;
+	path.clear();
+	while (currNode != nullptr)
+	{
+		path.push_back(currNode);
+		currNode = currNode->getPrevious();
+	}
+}
 
 
 #include "GraphNode.h"

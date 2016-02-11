@@ -13,22 +13,14 @@ typedef GraphArc<int, int> Arc;
 typedef GraphNode<string, int> Node;
 
 void visit( Node * pNode ) {
-	ofstream myfile;
-	myfile.open("output.txt", ios_base::app);
-	myfile << "Visiting: " << pNode->data() << endl;
-	myfile.close();
+	cout << "Visiting: " << pNode->data() << endl;
 }
 
 void printPath(vector<Node *> vec) {
-	ofstream myfile;
-	myfile.open("output.txt", ios_base::app);
 	for (int i = 0; i < vec.size(); i++)
 	{
-		myfile << "Path: " << vec[i]->data() << endl;
+		cout << "Path: " << vec[i]->data() << endl;
 	}
-	myfile << endl << endl << endl;
-	myfile.close();
-
 }
 
 int main(int argc, char *argv[]) {
@@ -52,11 +44,11 @@ int main(int argc, char *argv[]) {
 		graph.addArc(from, to, weight);
 	}
     myfile.close();
-
-	// Now traverse the graph.
-	//graph.breadthFirst( graph.nodeArray()[0], visit );
-	//graph.breadthFirstSearch(graph.nodeArray()[0], graph.nodeArray()[15], visit);
-	for (int i = 0; i < 30; i++)
+	
+	vector<Node *> vec;
+	graph.aStar(graph.nodeArray()[0], graph.nodeArray()[9], visit, vec);
+	printPath(vec);
+	/*for (int i = 0; i < 30; i++)
 	{
 		for (int j = 0; j < 30; j++)
 		{
@@ -64,7 +56,7 @@ int main(int argc, char *argv[]) {
 			graph.ucs(graph.nodeArray()[i], graph.nodeArray()[j], visit, vec);
 			printPath(vec);
 		}
-	}
+	}*/
 
 
 	system("PAUSE");
