@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include "stdafx.h"
 #include <list>
 #include <queue>
 
@@ -50,7 +51,7 @@ public:
     }
 
     // Public member functions.
-    bool addNode( NodeType data, int index );
+	bool addNode(NodeType data, float x, float y, sf::Font * font, int index);
     void removeNode( int index );
     bool addArc( int from, int to, ArcType weight );
     void removeArc( int from, int to );
@@ -61,8 +62,8 @@ public:
 	void breadthFirstSearch(Node* pStart, Node* pGoal, void (*pProcess)(Node*));
 	void ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(Node*), std::vector<Node *>& path);
 	void aStar(Node* pStart, Node* pDest, void(*pProcess)(Node*), std::vector<Node *>& path);
-
-
+	void draw(sf::RenderWindow * window);
+	Node* getNodeAtMouse(int x, int y);
 
 	// functor struct for priority queue for ucs
 	struct UCSSearchCostCompare{
@@ -126,7 +127,7 @@ Graph<NodeType, ArcType>::~Graph() {
 //  Return Value:   true if successful
 // ----------------------------------------------------------------
 template<class NodeType, class ArcType>
-bool Graph<NodeType, ArcType>::addNode( NodeType data, int index ) {
+bool Graph<NodeType, ArcType>::addNode(NodeType data, float x, float y, sf::Font * font, int index) {
    bool nodeNotPresent = false;
    // find out if a node does not exist at that index.
    if ( m_pNodes[index] == 0) {
@@ -135,6 +136,8 @@ bool Graph<NodeType, ArcType>::addNode( NodeType data, int index ) {
       m_pNodes[index] = new Node;
       m_pNodes[index]->setData(data);
       m_pNodes[index]->setMarked(false);
+	  m_pNodes[index]->setText(font);
+	  m_pNodes[index]->setPosition(x, y);
 
       // increase the count and return success.
       m_count++;
@@ -419,7 +422,8 @@ void Graph<NodeType, ArcType>::ucs(Node* pStart, Node* pDest, void(*pVisitFunc)(
 					float dist = (*iter).weight() + nodeQueue.top()->getSearchDistance();
 					if (dist < (*iter).node()->getSearchDistance()){
 						(*iter).node()->setSearchDistance(dist);
-						(*iter).node()->setHeuristic(dist * 0.9);
+						// this is for question 1 of A* assignment
+						//(*iter).node()->setHeuristic(dist * 0.9);
 						(*iter).node()->setPrevious(nodeQueue.top());
 					}
 					// add all of the child nodes that have not been 
@@ -474,18 +478,22 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 	if (pStart != 0) {
 		// create priority queue with ordering based on f(n) or total cost
 		priority_queue<Node*, vector<Node *>, AStarSearchCostCompare> nodeQueue;
+		vector<Node *> newNodes;
+		// ucs heuristic for part 1
+		//ucs(pDest, pStart, pProcess, path);
 
 		// set starting search distance to be 0
 		pStart->setSearchDistance(0);
-
-		// ucs heuristic for part 1
-		ucs(pDest, pStart, pProcess, path);
-
+		sf::Vector2f endPos = pDest->getPosition();
 		for (int i = 0; i < m_count; i++)
 		{
 			// if not starting set to be large number
-			if (m_pNodes[i] != pStart)
+			if (m_pNodes[i] != pStart) {
 				m_pNodes[i]->setSearchDistance(numeric_limits<float>::infinity());
+				
+			}
+			sf::Vector2f currPos = m_pNodes[i]->getPosition();
+			m_pNodes[i]->setHeuristic(sqrt((currPos.x - endPos.x) * (currPos.x - endPos.x) + (currPos.y - endPos.y) * (currPos.y - endPos.y)));
 			// reset all previous pointers
 			m_pNodes[i]->setPrevious(nullptr);
 			m_pNodes[i]->setMarked(false);
@@ -518,7 +526,7 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 					// add all of the child nodes that have not been 
 					// marked into the queue
 					if (!(*iter).node()->marked()){
-						nodeQueue.push((*iter).node());
+						newNodes.push_back((*iter).node());
 						(*iter).node()->setMarked(true);
 					}
 					if ((*iter).node() == pDest) {
@@ -528,6 +536,11 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 			}
 			// dequeue the current node.
 			nodeQueue.pop();
+			for (int i = 0; i < newNodes.size(); i++)
+			{
+				nodeQueue.push(newNodes[i]);
+			}
+			newNodes.clear();
 		}
 	}
 	Node * currNode = pDest;
@@ -539,6 +552,23 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 	}
 }
 
+template<class NodeType, class ArcType>
+void Graph<NodeType, ArcType>::draw(sf::RenderWindow * window){
+	for (int i = 0; i < m_count; i++)
+	{
+		m_pNodes[i]->draw(window);
+	}
+}
+
+template<class NodeType, class ArcType>
+GraphNode<NodeType, ArcType>* Graph<NodeType, ArcType>::getNodeAtMouse(int x, int y) {
+	for (int i = 0; i < m_count; i++)
+	{
+		if (m_pNodes[i]->intersects(x, y))
+			return m_pNodes[i];
+	}
+	return nullptr;
+}
 
 #include "GraphNode.h"
 #include "GraphArc.h"

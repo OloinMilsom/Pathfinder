@@ -1,17 +1,32 @@
-﻿  main.cpp
-c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(20): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(422): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(385) : while compiling class template member function 'void Graph<std::string,int>::ucs(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)'
-          with
-          [
-              _Ty=Node *
-          ]
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(482) : see reference to function template instantiation 'void Graph<std::string,int>::ucs(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)' being compiled
-          with
-          [
-              _Ty=Node *
-          ]
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(91) : while compiling class template member function 'Graph<std::string,int>::Graph(int)'
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(28) : see reference to function template instantiation 'Graph<std::string,int>::Graph(int)' being compiled
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(28) : see reference to class template instantiation 'Graph<std::string,int>' being compiled
-  Practical04_Graphs.vcxproj -> C:\Users\kepor_000\Desktop\Pathfinder\Debug\Practical04_Graphs.exe
+﻿Build started 12/02/2016 16:33:38.
+     1>Project "C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Practical04_Graphs\Practical04_Graphs.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\SFML-2.3.2\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\main.cpp(41): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\main.cpp(127): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graph.h(539): warning C4018: '<' : signed/unsigned mismatch
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graph.h(451) : while compiling class template member function 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)'
+                 with
+                 [
+                     _Ty=Node *
+                 ]
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\main.cpp(98) : see reference to function template instantiation 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)' being compiled
+                 with
+                 [
+                     _Ty=Node *
+                 ]
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\main.cpp(69) : see reference to class template instantiation 'Graph<std::string,int>' being compiled
+     1>c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graphnode.h(236): warning C4018: '<' : signed/unsigned mismatch
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graphnode.h(234) : while compiling class template member function 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)'
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graph.h(559) : see reference to function template instantiation 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)' being compiled
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\graph.h(111) : while compiling class template member function 'Graph<std::string,int>::~Graph(void)'
+                 c:\users\deepseaisopod\desktop\currentprojects\data structures and algorithms\pathfinding\practical04_graphs\main.cpp(93) : see reference to function template instantiation 'Graph<std::string,int>::~Graph(void)' being compiled
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Debug\Practical04_Graphs.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\SFML-2.3.2\lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Debug\Practical04_Graphs.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Debug\Practical04_Graphs.lib" /MACHINE:X86 Debug\main.obj
+         Practical04_Graphs.vcxproj -> C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Debug\Practical04_Graphs.exe
+     1>Done Building Project "C:\Users\DeepSeaIsopod\Desktop\CurrentProjects\Data Structures and Algorithms\Pathfinding\Practical04_Graphs\Practical04_Graphs.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.65

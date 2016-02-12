@@ -1,6 +1,7 @@
 #ifndef GRAPHNODE_H
 #define GRAPHNODE_H
 
+#include "stdafx.h"
 #include <list>
 
 // Forward references
@@ -22,6 +23,11 @@ private:
 // Description: data inside the node
 // -------------------------------------------------------
     NodeType m_data;
+
+// -------------------------------------------------------
+// Description: physical position of the node
+// -------------------------------------------------------
+	sf::Vector2f m_pos;
 
 // -------------------------------------------------------
 // Description: current distance from search node (g(n))
@@ -48,6 +54,9 @@ private:
 // -------------------------------------------------------
 	Node* m_prevNode;
 
+	vector<sf::Text> m_text;
+	sf::CircleShape m_shape;
+
 public:
     // Accessor functions
     list<Arc> const & arcList() const {
@@ -62,6 +71,10 @@ public:
         return m_data;
     }
 
+	sf::Vector2f getPosition() const {
+		return m_pos;
+	}
+
 	float const & getSearchDistance() const {
 		return m_searchDistance;
 	}
@@ -74,6 +87,34 @@ public:
     void setData(NodeType data) {
         m_data = data;
     }
+
+	void setPosition(float x, float y) {
+		m_pos.x = x;
+		m_pos.y = y;
+		m_shape = sf::CircleShape(30);
+		m_shape.setPosition(m_pos);
+		m_text[0].setPosition(m_pos + sf::Vector2f(10,0));
+		m_text[1].setPosition(m_pos + sf::Vector2f(10, 16));
+		m_text[2].setPosition(m_pos + sf::Vector2f(10, 32));
+	}
+
+	void setText(sf::Font * f) {
+		m_text = vector<sf::Text>(3);
+		m_text[0].setString(m_data);
+		m_text[0].setFont(*f);
+		m_text[0].setCharacterSize(20);
+		m_text[0].setColor(sf::Color::Blue);
+
+		m_text[1].setString("g(n):0");
+		m_text[1].setFont(*f);
+		m_text[1].setCharacterSize(14);
+		m_text[1].setColor(sf::Color::Blue);
+
+		m_text[2].setString("h(n):0");
+		m_text[2].setFont(*f);
+		m_text[2].setCharacterSize(14);
+		m_text[2].setColor(sf::Color::Blue);
+	}
     
     void setMarked(bool mark) {
         m_marked = mark;
@@ -81,14 +122,23 @@ public:
 
 	void setSearchDistance(float dist) {
 		m_searchDistance = dist;
+		if (m_searchDistance != numeric_limits<float>::infinity())
+			m_text[1].setString("g(n):" + to_string(static_cast<int>(m_searchDistance)));
+		else
+			m_text[1].setString("g(n):0");
 	}
 
 	void setHeuristic(float h) {
 		m_heuristic = h;
+		m_text[2].setString("h(n):" + to_string(static_cast<int>(m_heuristic)));
 	}
 
 	void setPrevious(Node* prev) {
 		m_prevNode = prev;
+	}
+
+	void setColour(sf::Color c) {
+		m_shape.setFillColor(c);
 	}
 
 	Node* getPrevious(){
@@ -99,8 +149,8 @@ public:
     void addArc( Node* pNode, ArcType pWeight );
     void removeArc( Node* pNode );
 	void printPrevious(void(*pProcess)(Node*));
-
-
+	void draw(sf::RenderWindow * window);
+	bool intersects(int x, int y);
 };
 
 // ----------------------------------------------------------------
@@ -178,6 +228,20 @@ void GraphNode<NodeType, ArcType>::printPrevious(void(*pProcess)(Node*)) {
 		pProcess(m_prevNode);
 		m_prevNode->printPrevious(pProcess);
 	}
+}
+
+template<typename NodeType, typename ArcType>
+void GraphNode<NodeType, ArcType>::draw(sf::RenderWindow * window){
+	window->draw(m_shape);
+	for (int i = 0; i < m_text.size(); i++)
+	{
+		window->draw(m_text[i]);
+	}
+}
+
+template<typename NodeType, typename ArcType>
+bool GraphNode<NodeType, ArcType>::intersects(int x, int y){
+	return x > m_pos.x && x < m_pos.x + 2 * m_shape.getRadius() && y > m_pos.y && y < m_pos.y + 2 * m_shape.getRadius();
 }
 
 #include "GraphArc.h"
