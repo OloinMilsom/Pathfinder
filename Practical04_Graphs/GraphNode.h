@@ -103,17 +103,17 @@ public:
 		m_text[0].setString(m_data);
 		m_text[0].setFont(*f);
 		m_text[0].setCharacterSize(20);
-		m_text[0].setColor(sf::Color::Blue);
+		m_text[0].setColor(sf::Color::Black);
 
 		m_text[1].setString("g(n):0");
 		m_text[1].setFont(*f);
 		m_text[1].setCharacterSize(14);
-		m_text[1].setColor(sf::Color::Blue);
+		m_text[1].setColor(sf::Color::Black);
 
 		m_text[2].setString("h(n):0");
 		m_text[2].setFont(*f);
 		m_text[2].setCharacterSize(14);
-		m_text[2].setColor(sf::Color::Blue);
+		m_text[2].setColor(sf::Color::Black);
 	}
     
     void setMarked(bool mark) {

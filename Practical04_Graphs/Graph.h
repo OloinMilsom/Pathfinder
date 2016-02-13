@@ -64,6 +64,7 @@ public:
 	void aStar(Node* pStart, Node* pDest, void(*pProcess)(Node*), std::vector<Node *>& path);
 	void draw(sf::RenderWindow * window);
 	Node* getNodeAtMouse(int x, int y);
+	void reset();
 
 	// functor struct for priority queue for ucs
 	struct UCSSearchCostCompare{
@@ -568,6 +569,16 @@ GraphNode<NodeType, ArcType>* Graph<NodeType, ArcType>::getNodeAtMouse(int x, in
 			return m_pNodes[i];
 	}
 	return nullptr;
+}
+
+template<class NodeType, class ArcType>
+void Graph<NodeType, ArcType>::reset(){
+	for (int i = 0; i < m_count; i++)
+	{
+		m_pNodes[i]->setColour(sf::Color::White);
+		m_pNodes[i]->setSearchDistance(numeric_limits<float>::infinity());
+		m_pNodes[i]->setHeuristic(0);
+	}
 }
 
 #include "GraphNode.h"

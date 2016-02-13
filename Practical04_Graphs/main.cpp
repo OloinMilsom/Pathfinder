@@ -94,9 +94,14 @@ int main(int argc, char *argv[]) {
 	vector<pair<sf::VertexArray, sf::Text>> arcs;
 	initialiseGraph(graph, &font, arcs);
 	
-	vector<Node *> vec;
+	Node * start = nullptr;
+	Node * finish = nullptr;
+
+	bool commenceSearch = false;
+
+	/*vector<Node *> vec;
 	graph.aStar(graph.nodeArray()[0], graph.nodeArray()[29], visit, vec);
-	printPath(vec);
+	printPath(vec);*/
 
 	// Start game loop 
 	while (window.isOpen())
@@ -110,14 +115,36 @@ int main(int argc, char *argv[]) {
 				window.close();
 
 			// Escape key : exit 
-			if ((Event.type == sf::Event::KeyPressed) && (Event.key.code == sf::Keyboard::Escape))
-				window.close();
+			if (Event.type == sf::Event::KeyPressed) {
+				if (Event.key.code == sf::Keyboard::Escape) {
+					window.close();
+				}
+				if (Event.key.code == sf::Keyboard::R) {
+					graph.reset();
+				}
+			}
 
 			if (Event.type == sf::Event::MouseButtonPressed) {
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){
-					graph.getNodeAtMouse(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+					if (start == nullptr) {
+						start = graph.getNodeAtMouse(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+					}
+					else {
+						finish = graph.getNodeAtMouse(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y);
+						if (finish != nullptr)
+							commenceSearch = true;
+					}
 				}
 			}
+		}
+
+		if (commenceSearch) {
+			vector<Node *> vec;
+			graph.aStar(start, finish, visit, vec);
+			printPath(vec);
+			commenceSearch = false;
+			start = nullptr;
+			finish = nullptr;
 		}
 
 		//prepare frame
