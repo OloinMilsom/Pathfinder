@@ -83,6 +83,10 @@ public:
 		return m_heuristic;
 	}
 
+	float const & getCost() const {
+		return m_heuristic + m_searchDistance;
+	}
+
     // Manipulator functions
     void setData(NodeType data) {
         m_data = data;

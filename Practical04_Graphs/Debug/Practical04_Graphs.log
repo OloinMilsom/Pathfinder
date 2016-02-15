@@ -1,21 +1,45 @@
 ﻿  main.cpp
 c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(41): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(154): warning C4018: '<' : signed/unsigned mismatch
-c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(540): warning C4018: '<' : signed/unsigned mismatch
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(452) : while compiling class template member function 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)'
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(161): warning C4018: '<' : signed/unsigned mismatch
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(552): warning C4018: '<' : signed/unsigned mismatch
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(456) : while compiling class template member function 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)'
           with
           [
               _Ty=Node *
           ]
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(143) : see reference to function template instantiation 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)' being compiled
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(107) : see reference to function template instantiation 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)' being compiled
           with
           [
               _Ty=Node *
           ]
           c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(69) : see reference to class template instantiation 'Graph<std::string,int>' being compiled
-c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(236): warning C4018: '<' : signed/unsigned mismatch
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(234) : while compiling class template member function 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)'
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(560) : see reference to function template instantiation 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)' being compiled
-          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(112) : while compiling class template member function 'Graph<std::string,int>::~Graph(void)'
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(240): warning C4018: '<' : signed/unsigned mismatch
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(238) : while compiling class template member function 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)'
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(572) : see reference to function template instantiation 'void GraphNode<std::string,int>::draw(sf::RenderWindow *)' being compiled
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(116) : while compiling class template member function 'Graph<std::string,int>::~Graph(void)'
           c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(93) : see reference to function template instantiation 'Graph<std::string,int>::~Graph(void)' being compiled
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(82): warning C4244: 'initializing' : conversion from 'const float' to 'int', possible loss of data
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(80) : while compiling class template member function 'bool Graph<std::string,int>::AStarSearchCostCompare::operator ()(GraphNode<std::string,int> *,GraphNode<std::string,int> *)'
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\xutility(521) : see reference to function template instantiation 'bool Graph<std::string,int>::AStarSearchCostCompare::operator ()(GraphNode<std::string,int> *,GraphNode<std::string,int> *)' being compiled
+          c:\program files (x86)\microsoft visual studio 12.0\vc\include\queue(438) : see reference to class template instantiation 'Graph<std::string,int>::AStarSearchCostCompare' being compiled
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(485) : see reference to class template instantiation 'std::priority_queue<GraphNode<std::string,int> *,std::vector<Node *,std::allocator<_Ty>>,Graph<std::string,int>::AStarSearchCostCompare>' being compiled
+          with
+          [
+              _Ty=Node *
+          ]
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(456) : while compiling class template member function 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)'
+          with
+          [
+              _Ty=Node *
+          ]
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(107) : see reference to function template instantiation 'void Graph<std::string,int>::aStar(GraphNode<std::string,int> *,GraphNode<std::string,int> *,void (__cdecl *)(GraphNode<std::string,int> *),std::vector<Node *,std::allocator<_Ty>> &)' being compiled
+          with
+          [
+              _Ty=Node *
+          ]
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(83): warning C4244: 'initializing' : conversion from 'const float' to 'int', possible loss of data
+c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(87): warning C4172: returning address of local variable or temporary
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graphnode.h(86) : while compiling class template member function 'const float &GraphNode<std::string,int>::getCost(void) const'
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\graph.h(82) : see reference to function template instantiation 'const float &GraphNode<std::string,int>::getCost(void) const' being compiled
+          c:\users\kepor_000\desktop\pathfinder\practical04_graphs\main.cpp(36) : see reference to class template instantiation 'GraphNode<std::string,int>' being compiled
   Practical04_Graphs.vcxproj -> C:\Users\kepor_000\Desktop\Pathfinder\Debug\Practical04_Graphs.exe

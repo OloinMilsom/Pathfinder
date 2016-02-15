@@ -99,9 +99,16 @@ int main(int argc, char *argv[]) {
 
 	bool commenceSearch = false;
 
-	/*vector<Node *> vec;
-	graph.aStar(graph.nodeArray()[0], graph.nodeArray()[29], visit, vec);
-	printPath(vec);*/
+	vector<Node *> vec;
+	for (int i = 0; i < 30; i++)
+	{
+		for (int j = 0; j < 30; j++)
+		{
+			graph.aStar(graph.nodeArray()[i], graph.nodeArray()[j], visit, vec);
+		}
+	}
+	
+	//printPath(vec);
 
 	// Start game loop 
 	while (window.isOpen())

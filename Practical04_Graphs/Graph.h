@@ -78,7 +78,11 @@ public:
 	struct AStarSearchCostCompare{
 	public:
 		bool operator()(Node * n1, Node * n2) {
-			return (n1->getHeuristic() + n1->getSearchDistance()) > (n2->getHeuristic() + n2->getSearchDistance());
+			//bool ans = (n1->getHeuristic() + n1->getSearchDistance()) > (n2->getHeuristic() + n2->getSearchDistance());
+			int cost1 = n1->getCost();
+			int cost2 = n2->getCost();
+			bool ans = cost1 > cost2;
+			return ans;
 		}
 	};
 };
@@ -506,23 +510,31 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 		nodeQueue.push(pStart);
 		pStart->setMarked(true);
 		while (!nodeQueue.empty() && !found) {
+			Node * currNode = nodeQueue.top();
+			nodeQueue.pop();
+
 			// print visiting current top of queue
-			pProcess(nodeQueue.top());
+			pProcess(currNode);
 
 			// iterate through the children of the top of queue
-			list<Arc>::const_iterator iter = nodeQueue.top()->arcList().begin();
-			list<Arc>::const_iterator endIter = nodeQueue.top()->arcList().end();
+			list<Arc>::const_iterator iter = currNode->arcList().begin();
+			list<Arc>::const_iterator endIter = currNode->arcList().end();
 			for (; iter != endIter; iter++) {
-				if ((*iter).node() != nodeQueue.top()->getPrevious())
+				if ((*iter).node() != currNode->getPrevious())
 				{
 					// if the distance of the current route is shorter than the distance of 
 					// the previous shortest route, change the distance and accordingly
-					float searchDist = (*iter).weight() + nodeQueue.top()->getSearchDistance();
+					float searchDist = (*iter).weight() + currNode->getSearchDistance();
 					float distC = (*iter).node()->getHeuristic() + searchDist;
 					float cost = (*iter).node()->getHeuristic() + (*iter).node()->getSearchDistance();
-					if (distC < cost) {
+					if (distC < cost) {						
 						(*iter).node()->setSearchDistance(searchDist);
-						(*iter).node()->setPrevious(nodeQueue.top());
+						(*iter).node()->setPrevious(currNode);
+						
+						if (!nodeQueue.empty() && find(const_cast<Node**>(&nodeQueue.top()), const_cast<Node**>(&nodeQueue.top()) + nodeQueue.size(), (*iter).node()) != (const_cast<Node**>(&nodeQueue.top()) + nodeQueue.size()))
+							std::make_heap(const_cast<Node**>(&nodeQueue.top()),
+							const_cast<Node**>(&nodeQueue.top()) + nodeQueue.size(),
+							AStarSearchCostCompare());
 					}
 					// add all of the child nodes that have not been 
 					// marked into the queue
@@ -536,7 +548,7 @@ void Graph<NodeType, ArcType>::aStar(Node* pStart, Node* pDest, void(*pProcess)(
 				}
 			}
 			// dequeue the current node.
-			nodeQueue.pop();
+			//nodeQueue.pop();
 			for (int i = 0; i < newNodes.size(); i++)
 			{
 				nodeQueue.push(newNodes[i]);
